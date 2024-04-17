@@ -1,0 +1,4 @@
+libs.egg-info
+*/__pycache__
+*.zip
+*.whl
