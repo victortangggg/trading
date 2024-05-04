@@ -1,0 +1,330 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta content="IE=edge" http-equiv="X-UA-Compatible">
+  <meta content="width=device-width, initial-scale=1" name="viewport">
+  <title>Chart Marker</title>
+  <meta content="Chart Marker" name="keywords">
+  <meta content="Chart Marker" name="description">
+  <link href="https://cdn.anychart.com/releases/8.12.1/css/anychart-ui.min.css?hcode=a0c21fc77e1449cc86299c5faa067dc4"
+    rel="stylesheet" type="text/css">
+  <style>
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    }
+
+    select {
+      margin: 10px 0 0 10px;
+    }
+
+    input {
+      margin: 10px 0 0 10px;
+    }
+
+    button {
+      margin: 10px 0 0 5px;
+    }
+
+    #container {
+      position: absolute;
+      width: 100%;
+      top: 35px;
+      bottom: 0;
+    }
+
+    #selectContainer {
+      display: contents;
+    }
+
+    #buy {
+      color: green;
+      font-weight: bold;
+    }
+
+    #sell {
+      color: red;
+      font-weight: bold;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="selectContainer"></div>
+  <button onclick="load()">Load</button>
+  <select id="typeSelect" onclick="create()">
+    <option value="default" selected disabled>Annotation Type</option>
+    <option value="marker|buy" id="buy">BUY</option>
+    <option value="marker|sell" id="sell">SELL</option>
+  </select>
+  <button onclick="removeAll()">Remove All</button>
+  <button onclick="save()">Save</button>
+  <div id="container"></div>
+  <script
+    src="https://cdn.anychart.com/releases/8.12.1/js/anychart-core.min.js?hcode=a0c21fc77e1449cc86299c5faa067dc4"></script>
+  <script
+    src="https://cdn.anychart.com/releases/8.12.1/js/anychart-stock.min.js?hcode=a0c21fc77e1449cc86299c5faa067dc4"></script>
+  <script
+    src="https://cdn.anychart.com/releases/8.12.1/js/anychart-annotations.min.js?hcode=a0c21fc77e1449cc86299c5faa067dc4"></script>
+  <script
+    src="https://cdn.anychart.com/releases/8.12.1/js/anychart-exports.min.js?hcode=a0c21fc77e1449cc86299c5faa067dc4"></script>
+  <script
+    src="https://cdn.anychart.com/releases/8.12.1/js/anychart-ui.min.js?hcode=a0c21fc77e1449cc86299c5faa067dc4"></script>
+  <script src="https://cdn.jsdelivr.net/npm/danfojs@1.1.2/lib/bundle.js"></script>
+  <script src="js/csco-daily-short.js"></script>
+  <script type="text/javascript">// the list of annotations in JSON format
+
+    const fileUrl = "http://" + window.location.host + "/data";
+
+    dataFrame = null;
+
+    function timestampToDateStr(timestamp) {
+      // Create a new Date object using the timestamp (in milliseconds)
+      var date = new Date(timestamp);
+
+      // Get year, month, and day from the Date object
+      var year = date.getFullYear();
+      var month = (date.getMonth() + 1).toString().padStart(2, "0"); // Adding 1 because months are zero-based
+      var day = date.getDate().toString().padStart(2, "0");
+
+      // Concatenate year, month, and day with hyphens to form the date string
+      var dateString = `${year}-${month}-${day}`;
+
+      return dateString;
+    }
+
+    function dateStrToTimestamp(dateString) {
+      // Split the date string into year, month, and day
+      var parts = dateString.split('-');
+
+      // Create a new Date object using the year, month, and day
+      var date = new Date(parts[0], parts[1] - 1, parts[2]); // Month is 0-based
+
+      // Get the timestamp in milliseconds
+      var timestamp = date.getTime();
+
+      return timestamp;
+    }
+
+    function generateSidesList(dateTsList, markedList) {
+
+      const sides = [];
+      var i = 0;
+      var j = 0;
+
+      while (i < dateTsList.length) {
+        var dateTs = dateTsList[i];
+        var [markedTs, side] = (j < markedList.length) ? markedList[j] : [null, null]
+        var prevDateTs = (i > 0) ? dateTsList[i - 1] : 0;
+        var found = false;
+        if ((markedTs === dateTs) || (markedTs && prevDateTs < markedTs && markedTs < dateTs)) {
+          found = true;
+        }
+        if (found) {
+          sides[sides.length - 1] = side;
+        }
+        sides.push(null);
+        j += found ? 1 : 0;
+        i++;
+      }
+
+      return sides;
+    }
+
+    function fetchFileNames(url) {
+      fetch(url)
+        .then(response => response.text())
+        .then(data => {
+          // Parse the HTML content to extract file names
+          const parser = new DOMParser();
+          const htmlDocument = parser.parseFromString(data, "text/html");
+          const links = htmlDocument.querySelectorAll("a");
+          const selectElement = document.createElement("select");
+          selectElement.id = "fileName";
+
+          links.forEach(link => {
+
+            if (link.href.endsWith("/") === false && link.children && link.children.length > 1) {
+              option = link.children[0].textContent.trim();
+              if (option.endsWith(".csv")) {
+                const optionElement = document.createElement("option");
+                optionElement.textContent = option;
+                selectElement.appendChild(optionElement);
+              }
+            }
+
+            const selectContainer = document.getElementById("selectContainer");
+            selectContainer.appendChild(selectElement);
+
+          });
+        })
+        .catch(error => {
+          console.error("Error fetching file names:", error);
+        });
+    }
+
+    fetchFileNames(fileUrl);
+
+    chart = anychart.stock();
+    plot = chart.plot(0);
+
+    chart.title("Price Marker");
+    chart.container("container");
+
+    function markerToSide(marker) {
+      if (marker.markerType === "arrow-up" && marker.color === "green") {
+        return "BUY";
+      } else if (marker.markerType === "arrow-down" && marker.color === "red") {
+        return "SELL";
+      }
+      return marker.markerType;
+    }
+
+    function sideToMarker(side, dateStr, value) {
+      switch (side) {
+        case "BUY":
+          return {
+            "enabled": true,
+            "type": "marker",
+            "color": "green",
+            "allowEdit": true,
+            "hoverGap": 5,
+            "normal": {
+              "hatchFill": "none",
+              "size": 20
+            },
+            "hovered": {},
+            "selected": {},
+            "markerType": "arrow-up",
+            "anchor": "center-top",
+            "offsetX": 0,
+            "offsetY": 0,
+            "xAnchor": dateStrToTimestamp(dateStr),
+            "valueAnchor": value
+          }
+        case "SELL":
+          return {
+            "enabled": true,
+            "type": "marker",
+            "color": "red",
+            "allowEdit": true,
+            "hoverGap": 5,
+            "normal": {
+              "hatchFill": "none",
+              "size": 20
+            },
+            "hovered": {},
+            "selected": {},
+            "markerType": "arrow-down",
+            "anchor": "center-top",
+            "offsetX": 0,
+            "offsetY": 0,
+            "xAnchor": dateStrToTimestamp(dateStr),
+            "valueAnchor": value
+          }
+        default:
+          return null;
+      }
+    }
+
+    function updateMarkers(markers) {
+      const markedList = markers.map(marker => [marker.xAnchor, markerToSide(marker)]).sort((a, b) => { return a[0] - b[0]; });
+      const dateTsList = dataFrame['date'].values.map(dateStr => dateStrToTimestamp(dateStr)).sort((a, b) => { return a - b; });
+      const sidesList = generateSidesList(dateTsList, markedList);
+      dataFrame.addColumn("Sides", sidesList, { inplace: true });
+
+      console.log(dataFrame['Sides'].values);
+    }
+
+    anychart.onDocumentReady(function () {
+
+      chart.listen("annotationDrawingFinish", function () {
+        document.getElementById("typeSelect").value = "default";
+        annotationObj = JSON.parse(plot.annotations().toJson(true));
+        var markers = annotationObj.annotationsList.filter(x => x.type === "marker" && x.xAnchor)
+        updateMarkers(markers);
+      });
+
+      chart.listen("annotationChange", function (e) {
+        annotationObj = JSON.parse(plot.annotations().toJson(true));
+        var markers = annotationObj.annotationsList.filter(x => x.type === "marker" && x.xAnchor)
+        updateMarkers(markers);
+      });
+
+    });
+
+    // create annotations
+    function create() {
+      var select = document.getElementById("typeSelect");
+      var drawingObject = {
+        type: select.value.split("|")[0]
+      };
+      if (select.value.includes("|")) {
+        const [type, action] = select.value.split("|");
+        drawingObject.type = type;
+        drawingObject.color = (action === "buy") ? "green" : "red";
+        drawingObject.markerType = (action === "buy") ? undefined : "arrowDown";
+      }
+      plot.annotations().startDrawing(drawingObject);
+    }
+
+    // remove all 
+    function removeAll() {
+      plot.annotations().removeAllAnnotations();
+    }
+
+    // save 
+    function save() {
+      dfd.toCSV(dataFrame, { fileName: "testOut.csv", download: true });
+    }
+
+    function getMarkersIfSides() {
+      if (dataFrame.columns.includes("Sides")) {
+        const columnsIndex = {}
+        dataFrame.columns.forEach(function (value, index) {
+          columnsIndex[value] = index;
+        });
+        var markers = dataFrame.apply(function (row) {
+          return sideToMarker(
+            row[columnsIndex['Sides']],
+            row[columnsIndex['date']],
+            row[columnsIndex['Close']]
+          );
+        }, { axis: 1 }).values.filter(x => x !== null);
+        return markers
+      }
+    }
+
+    // load chart
+    function load() {
+      const fileName = document.getElementById("fileName");
+
+      dfd.readCSV(fileUrl + "/" + fileName.value).then(df => {
+
+        dataFrame = df;
+        var dataTable = anychart.data.table("date");
+        dataTable.addData(dfd.toJSON(dataFrame));
+        var mapping = dataTable.mapAs({ "open": "Open", "high": "High", "low": "Low", "close": "Close" });
+
+        plot.removeAllSeries();
+        plot.annotations().removeAllAnnotations();
+        plot.ohlc(mapping).name(fileName.value);
+
+        const markers = getMarkersIfSides();
+        plot.annotations().fromJson({
+          "annotationsList": markers
+        });
+
+        chart.draw();
+      });
+
+    }
+  </script>
+</body>
+
+</html>
