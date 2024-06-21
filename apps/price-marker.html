@@ -312,7 +312,8 @@
 
         plot.removeAllSeries();
         plot.annotations().removeAllAnnotations();
-        plot.ohlc(mapping).name(fileName.value);
+        //plot.ohlc(mapping).name(fileName.value);
+        plot.candlestick(mapping).name(fileName.value);
 
         const markers = getMarkersIfSides();
         plot.annotations().fromJson({
