@@ -6,6 +6,58 @@
     <title>Markets Correlation</title>
 </head>
 <body>
-    {{ message }}
+    <div id="container" style="height: 1000px"></div>
+    <script src="https://cdn.anychart.com/releases/8.12.1/js/anychart-core.min.js"></script>
+    <script src="https://cdn.anychart.com/releases/8.12.1/js/anychart-sparkline.min.js"></script>
+    <script src="https://cdn.anychart.com/releases/8.12.1/js/anychart-table.min.js"></script>
+    <script type="text/javascript">
+        anychart.onDocumentReady(function () {
+
+            rawData = {{ raw_data }};
+
+            tickers = [null, ...Object.keys( rawData )]
+            tickerMapping = tickers.reduce((acc, curr, index) => {
+                acc[curr] = index;
+                return acc;
+            }, {});
+
+            let m = n = tickers.length;
+            contents = new Array( m );
+            for (let i = 0; i < m; i++) {
+                if (i == 0) {
+                    contents[i] = tickers;
+                } else {
+                    let row = new Array(n).fill(null);
+                    let data = rawData[ tickers[i] ] ;
+                    for (let j = 0; j < n; j++) {
+                        row[j] = (j == 0) ? tickers[i] : anychart.sparkline( data[ tickers[j] ] )
+                    }
+                    contents[i] = row;
+                }
+            }
+
+            // create table
+            var table = anychart.standalones.table();
+
+            // set table content
+            table.contents(contents);
+
+            //table.getRow(0).height("25%");  // Get first row and set height 25%
+            table.getCol(0).width(70);      // Get first column and set width 70 px
+
+            table
+                .cellBorder("#B8B8B8")        // Adjust table border
+                .vAlign("middle")             // Position text into the center
+                .hAlign("center")             // Position text into the center
+                //.fontWeight(700)              // Bold text
+                .height(210)                  // Set table height
+                .width(m * 80);                  // Set table width
+
+            // set table container and initiate draw
+            table.maxHeight();
+            //table.minWidth();
+            table.container("container").draw();
+            });
+    </script>
 </body>
 </html>
