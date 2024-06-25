@@ -50,8 +50,8 @@
                 .vAlign("middle")             // Position text into the center
                 .hAlign("center")             // Position text into the center
                 //.fontWeight(700)              // Bold text
-                .height(210)                  // Set table height
-                .width(m * 80);                  // Set table width
+                .height(m * 40)                  // Set table height
+                .width(m * 85);                  // Set table width
 
             // set table container and initiate draw
             table.maxHeight();
