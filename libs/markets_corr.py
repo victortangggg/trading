@@ -109,10 +109,10 @@ class HTMLTemplate:
             template = environment.get_template("markets_corr.template")
             out.write( template.render(self.context) )
             
-
-
-mc = MarketRunningCorr(tickers=['SHY', 'VXX', 'EWS', 'TQQQ', 'GSG', 'UJB', 'TYD', 'GLD'], start_date='2024-06-01')
-mc.run()
-corrs = mc.get()
-t = HTMLTemplate(raw_data=corrs)
-t.render()
+# today = date.today()
+# start_date = ( today - timedelta(days=30) ).strftime( DATE_FORMAT )
+# mc = MarketRunningCorr(tickers=['SHY', 'VXX', 'EWS', 'TQQQ', 'GSG', 'UJB', 'TYD', 'GLD'], start_date=start_date)
+# mc.run()
+# corrs = mc.get()
+# t = HTMLTemplate(loaded_date = today.strftime(DATE_FORMAT), raw_data=corrs)
+# t.render()
