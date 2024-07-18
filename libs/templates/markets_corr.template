@@ -7,11 +7,16 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 </head>
 <body>
-    <div class="container">
+    <div class="container-fluid">
         <div class="row">
             <h3>{{ loaded_date }}</h3>
         </div>
-        <div id="container" style="height: 1100px"></div>
+        <div class="row" style="display:contents">
+            <div id="container-macro" style="height: 500px"></div>
+        </div>
+        <div class="row" style="display:contents">
+            <div id="container-sectors" style="height: 700px"></div>
+        </div>
     </div>
     <script src="https://cdn.anychart.com/releases/8.12.1/js/anychart-core.min.js"></script>
     <script src="https://cdn.anychart.com/releases/8.12.1/js/anychart-sparkline.min.js"></script>
@@ -20,11 +25,46 @@
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
     <script type="text/javascript">
-        anychart.onDocumentReady(function () {
+        function getColorHex(changeVal) {
+            const clamp = (num, min, max) => Math.min(Math.max(num, min), max);
+            
+            // Clamping changeVal to the range [-0.1, 0.1]
+            const clampedVal = clamp(changeVal, -0.1, 0.1);
+        
+            // Hex color values for -0.1, 0, and 0.1
+            const negColor = [255, 199, 199];  // #ffc7c7
+            const zeroColor = [247, 250, 247]; // #f7faf7
+            const posColor = [199, 252, 200];  // #c7fcc8
+        
+            let startColor, endColor, normalizedVal;
+        
+            if (clampedVal < 0) {
+                // Interpolate between negColor and zeroColor
+                startColor = negColor;
+                endColor = zeroColor;
+                normalizedVal = (clampedVal + 0.1) / 0.1;
+            } else {
+                // Interpolate between zeroColor and posColor
+                startColor = zeroColor;
+                endColor = posColor;
+                normalizedVal = clampedVal / 0.1;
+            }
+        
+            // Interpolating the color values
+            const interpolatedColor = startColor.map((start, index) => {
+                const end = endColor[index];
+                return Math.round(start + (end - start) * normalizedVal);
+            });
+        
+            // Converting the interpolated color to hex
+            const toHex = num => num.toString(16).padStart(2, '0');
+            const hexColor = `#${toHex(interpolatedColor[0])}${toHex(interpolatedColor[1])}${toHex(interpolatedColor[2])}`;
+        
+            return hexColor;
+        }
 
-            rawData = {{ raw_data }};
-
-            tickers = [null, ...Object.keys( rawData )]
+        function generate_chart(container_id, corr_data, corr_changes) {
+            tickers = [null, ...Object.keys( corr_data )]
             tickerMapping = tickers.reduce((acc, curr, index) => {
                 acc[curr] = index;
                 return acc;
@@ -37,10 +77,11 @@
                     contents[i] = tickers;
                 } else {
                     let row = new Array(n).fill(null);
-                    let data = rawData[ tickers[i] ] ;
+                    let data = corr_data[ tickers[i] ] ;
                     for (let j = 0; j < n; j++) {
                         row[j] = (j == 0) ? tickers[i] : anychart.sparkline( data[ tickers[j] ] )
                         if (j > 0) {
+                            row[j].background().fill( getColorHex(corr_changes[ tickers[i] ][ tickers[j] ]) );
                             row[j].negativeMarkers().enabled(true).stroke("0.1 red")
                         }
                     }
@@ -54,22 +95,33 @@
             // set table content
             table.contents(contents);
 
-            //table.getRow(0).height("25%");  // Get first row and set height 25%
             table.getCol(0).width(70);      // Get first column and set width 70 px
 
             table
                 .cellBorder("#B8B8B8")        // Adjust table border
                 .vAlign("middle")             // Position text into the center
                 .hAlign("center")             // Position text into the center
-                //.fontWeight(700)              // Bold text
                 .height(m * 40)                  // Set table height
-                .width(m * 90);                  // Set table width
+                .width(m * 100);                  // Set table width
 
             // set table container and initiate draw
             table.maxHeight();
-            //table.minWidth();
-            table.container("container").draw();
-            });
+            
+            table.container(container_id).draw();
+        }
+
+        anychart.onDocumentReady(function () {
+
+            rawMacroCorrData = {{ raw_macro_corr_data }};
+            rawMacroCorrChanges = {{ raw_macro_corr_changes }};
+            rawMacroChanges = {{ raw_macro_changes }};
+            generate_chart("container-macro", rawMacroCorrData, rawMacroCorrChanges);
+
+            rawSectorsCorrData = {{ raw_sectors_corr_data }};
+            rawSectorsCorrChanges = {{ raw_sectors_corr_changes }};
+            rawSectorsChanges = {{ raw_sectors_changes }};
+            generate_chart("container-sectors", rawSectorsCorrData, rawSectorsCorrChanges);
+        });
     </script>
 </body>
 </html>

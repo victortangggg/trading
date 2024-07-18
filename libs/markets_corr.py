@@ -62,6 +62,8 @@ class MarketRunningCorr(MarketCorrBase):
         self.interval = interval
         self._result = None
         self.result = None
+        self.corr_changes = None
+        self.changes = None
         
     def run(self):
         start_date_obj = datetime.strptime(self.start_date, DATE_FORMAT)
@@ -77,7 +79,21 @@ class MarketRunningCorr(MarketCorrBase):
             result[end] = cleaned_df.corr()
             current_date_obj += timedelta(days=self.interval)
             
+        last_df = cleaned_df.tail(2)
+        last_df = ( last_df / last_df.shift(1) ) - 1
+        changes = last_df.dropna().to_dict("records")[0]
+        
+        self.changes = changes
         self._result = result
+        
+    def _process_t_1(self):
+        corr_changes = defaultdict( lambda: defaultdict( float ) )
+        for ticker_a, corr in self.result.items():
+            for ticker_b, values in corr.items():
+                change = values[-1] - values[-2]
+                corr_changes[ ticker_a ][ ticker_b ] = change
+                
+        self.corr_changes = self._defaultdict_to_dict( corr_changes )
         
     def _process_result(self):
         result = defaultdict( lambda: defaultdict( list ) )
@@ -92,7 +108,8 @@ class MarketRunningCorr(MarketCorrBase):
         
     def get(self):
         self._process_result()
-        return self.result
+        self._process_t_1()
+        return self.result, self.corr_changes, self.changes
     
         
 class HTMLTemplate:
@@ -108,11 +125,53 @@ class HTMLTemplate:
         with open(self.OUTPUT_DIR + "markets_corr.html", mode="w", encoding="utf-8") as out:
             template = environment.get_template("markets_corr.template")
             out.write( template.render(self.context) )
-            
+
+
+
+
+
+### TEST ###
+
+# MACRO_TICKERS = [
+#     'SHY', 
+#     'VXX', 
+#     'EWS', 
+#     'TQQQ', 
+#     'GSG', 
+#     'UJB', 
+#     'TYD', 
+#     'GLD',
+#     'BTC-USD',
+#     'SGD=X',
+# ]
+
+# SECTORS_TICKERS = [
+#     'XLY',
+#     'XLP',
+#     'XLE',
+#     'XLF',
+#     'XLV',
+#     'XLI',
+#     'XLB',
+#     'XLK',
+#     'XLU',
+#     'XME',
+#     'GDX',
+#     'IYR',
+#     'XHB',
+#     'XRT',
+# ]
+
+# DATE_FORMAT = '%Y-%m-%d'
+# LOOKBACK = 30
+
 # today = date.today()
-# start_date = ( today - timedelta(days=30) ).strftime( DATE_FORMAT )
-# mc = MarketRunningCorr(tickers=['SHY', 'VXX', 'EWS', 'TQQQ', 'GSG', 'UJB', 'TYD', 'GLD'], start_date=start_date)
-# mc.run()
-# corrs = mc.get()
-# t = HTMLTemplate(loaded_date = today.strftime(DATE_FORMAT), raw_data=corrs)
-# t.render()
+# start_date_t0 = ( today - timedelta(days=LOOKBACK) ).strftime(DATE_FORMAT)
+
+# macros_running_corr = MarketRunningCorr(tickers=MACRO_TICKERS, start_date=start_date_t0)
+# macros_running_corr.run()
+# macro_corr_data_t0, macro_corr_changes, macro_changes = macros_running_corr.get()
+
+# sectors_running_corr = MarketRunningCorr(tickers=SECTORS_TICKERS, start_date=start_date_t0)
+# sectors_running_corr.run()
+# sectors_corr_data_t0, sectors_corr_changes, sector_changes = sectors_running_corr.get()
