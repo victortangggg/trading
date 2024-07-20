@@ -95,7 +95,7 @@
                     contents[i] = [null, ...contents[i]];
                 } else {
                     price_change = changes_pct[contents[i][0]];
-                    price_icon = (price_change > 0) ? "🟩 " : "🟥 ";
+                    price_icon = (price_change > 0) ? "🟩 " : (price_change < 0) ? "🟥 " : "⛔ ";
                     price_change = price_icon + price_change.toFixed(2) + "%";
                     contents[i] = [price_change, ...contents[i]];
                 }

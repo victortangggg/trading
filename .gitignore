@@ -3,3 +3,4 @@ libs.egg-info
 *.zip
 *.whl
 */.log
+archive
