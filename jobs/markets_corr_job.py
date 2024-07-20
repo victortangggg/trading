@@ -1,6 +1,7 @@
 from libs.markets_corr import MarketRunningCorr, HTMLTemplate
 from datetime import date, timedelta
 import os
+from win11toast import toast
 
 MACRO_TICKERS = [
     'SHY', 
@@ -49,20 +50,22 @@ if os.path.exists( past_html_path ) and not os.path.exists( archive_path ):
 
 macros_running_corr = MarketRunningCorr(tickers=MACRO_TICKERS, start_date=start_date_t0)
 macros_running_corr.run()
-macro_corr_data_t0, macro_corr_changes, macro_changes = macros_running_corr.get()
+macro_corr_data_t0, macro_corr_changes, macro_changes_pct = macros_running_corr.get()
 
 sectors_running_corr = MarketRunningCorr(tickers=SECTORS_TICKERS, start_date=start_date_t0)
 sectors_running_corr.run()
-sectors_corr_data_t0, sectors_corr_changes, sectors_changes = sectors_running_corr.get()
+sectors_corr_data_t0, sectors_corr_changes, sectors_changes_pct = sectors_running_corr.get()
 
 
 htmlTemplate = HTMLTemplate(
     loaded_date=yesterday.strftime("%A, %B %d, %Y"), 
     raw_macro_corr_data=macro_corr_data_t0, 
     raw_macro_corr_changes=macro_corr_changes,
-    raw_macro_changes=macro_changes,
+    raw_macro_changes_pct=macro_changes_pct,
     raw_sectors_corr_data=sectors_corr_data_t0,
     raw_sectors_corr_changes=sectors_corr_changes,
-    raw_sectors_changes=sectors_changes
+    raw_sectors_changes_pct=sectors_changes_pct
 )
 htmlTemplate.render()
+        
+toast('Markets Correlation Report', button='Dismiss')

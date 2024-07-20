@@ -63,7 +63,7 @@
             return hexColor;
         }
 
-        function generate_chart(container_id, corr_data, corr_changes) {
+        function generate_chart(container_id, corr_data, corr_changes, changes_pct) {
             tickers = [null, ...Object.keys( corr_data )]
             tickerMapping = tickers.reduce((acc, curr, index) => {
                 acc[curr] = index;
@@ -86,6 +86,18 @@
                         }
                     }
                     contents[i] = row;
+                }
+            }
+
+            // hydrate table contents with returns pct changes
+            for (let i = 0; i < contents.length; i++) {
+                if (i == 0) {
+                    contents[i] = [null, ...contents[i]];
+                } else {
+                    price_change = changes_pct[contents[i][0]];
+                    price_icon = (price_change > 0) ? "🟩 " : "🟥 ";
+                    price_change = price_icon + price_change.toFixed(2) + "%";
+                    contents[i] = [price_change, ...contents[i]];
                 }
             }
 
@@ -114,13 +126,13 @@
 
             rawMacroCorrData = {{ raw_macro_corr_data }};
             rawMacroCorrChanges = {{ raw_macro_corr_changes }};
-            rawMacroChanges = {{ raw_macro_changes }};
-            generate_chart("container-macro", rawMacroCorrData, rawMacroCorrChanges);
+            rawMacroChangesPct = {{ raw_macro_changes_pct }};
+            generate_chart("container-macro", rawMacroCorrData, rawMacroCorrChanges, rawMacroChangesPct);
 
             rawSectorsCorrData = {{ raw_sectors_corr_data }};
             rawSectorsCorrChanges = {{ raw_sectors_corr_changes }};
-            rawSectorsChanges = {{ raw_sectors_changes }};
-            generate_chart("container-sectors", rawSectorsCorrData, rawSectorsCorrChanges);
+            rawSectorsChangesPct = {{ raw_sectors_changes_pct }};
+            generate_chart("container-sectors", rawSectorsCorrData, rawSectorsCorrChanges, rawSectorsChangesPct);
         });
     </script>
 </body>

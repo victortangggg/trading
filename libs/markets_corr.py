@@ -63,7 +63,7 @@ class MarketRunningCorr(MarketCorrBase):
         self._result = None
         self.result = None
         self.corr_changes = None
-        self.changes = None
+        self.changes_pct = None
         
     def run(self):
         start_date_obj = datetime.strptime(self.start_date, DATE_FORMAT)
@@ -79,11 +79,15 @@ class MarketRunningCorr(MarketCorrBase):
             result[end] = cleaned_df.corr()
             current_date_obj += timedelta(days=self.interval)
             
-        last_df = cleaned_df.tail(2)
-        last_df = ( last_df / last_df.shift(1) ) - 1
-        changes = last_df.dropna().to_dict("records")[0]
+        # last_df = cleaned_df.tail(2)
+        # changes_pct_df = ( last_df / last_df.shift(1) ) - 1
+        # changes_pct = changes_pct_df.dropna().to_dict("records")[0]
         
-        self.changes = changes
+        last_df = df.fillna(method='ffill').tail(2)['Adj Close']
+        changes_pct_df = ( ( last_df / last_df.shift(1) ) - 1 ) * 100
+        changes_pct = changes_pct_df.dropna().to_dict("records")[0]
+        
+        self.changes_pct = changes_pct
         self._result = result
         
     def _process_t_1(self):
@@ -109,7 +113,7 @@ class MarketRunningCorr(MarketCorrBase):
     def get(self):
         self._process_result()
         self._process_t_1()
-        return self.result, self.corr_changes, self.changes
+        return self.result, self.corr_changes, self.changes_pct
     
         
 class HTMLTemplate:
