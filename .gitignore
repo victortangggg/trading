@@ -4,3 +4,4 @@ libs.egg-info
 *.whl
 */.log
 archive
+test.*

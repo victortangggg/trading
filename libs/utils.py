@@ -1,6 +1,7 @@
 import re
 import mplfinance as fplt
 from datetime import datetime, timedelta
+import matplotlib.pyplot as plt
 
 import warnings
 warnings.filterwarnings("ignore")
@@ -54,3 +55,48 @@ def add_to_date(date_str, delta=None):
     new_date = date_obj + timedelta(**delta)
     new_date_str = new_date.strftime('%Y-%m-%d')
     return new_date_str
+
+
+def split_df(df, window=30, step=1):
+    subdfs = [ df.iloc[i: i+window] for i in range(0, len(df), step) ]
+    return subdfs
+
+
+def plot_scatter_line_comp( dfscatter, dfline, dfline_cols = None ):
+    
+    dfscatter_cols = dfscatter.columns
+    if len(dfscatter_cols) != 2:
+        raise ValueError("dfscatter needs to have exactly 2 fields")
+    
+    if not dfline_cols:
+        dfline_cols = dfline.columns
+
+    # Scatter plot for columns A and B
+    fig, ax = plt.subplots(1, 2, figsize=(10, 5))  # Creating subplots for scatter and line plot
+    scatter = ax[0].scatter(dfscatter[ dfscatter_cols[0] ], dfscatter[ dfscatter_cols[1] ], picker=True)  # Scatter plot with picking enabled
+    ax[0].set_title(f'Scatter Plot ({dfscatter_cols[0]} vs {dfscatter_cols[1]})')
+    ax[0].set_xlabel(dfscatter_cols[0])
+    ax[0].set_ylabel(dfscatter_cols[1])
+
+    # Define what happens when a point is selected
+    def onpick(event):
+        ind = event.ind  # Get index of the selected point
+        selected_row = dfline.iloc[ind[0]]  # Retrieve the row data based on index
+        print(f'Selected row:\n{selected_row}')
+        
+        # Clear previous line plot
+        ax[1].clear()
+
+        # Plotting the line graph for the selected row
+        ax[1].plot(dfline_cols, selected_row.values, marker='o')
+        ax[1].set_title(f'Line Plot for row {ind[0]}')
+        ax[1].set_xlabel('Columns')
+        ax[1].set_ylabel('Values')
+
+        # Redraw the figure to update it
+        fig.canvas.draw()
+
+    # Connect the scatter plot with the event handler
+    fig.canvas.mpl_connect('pick_event', onpick)
+
+    plt.show()

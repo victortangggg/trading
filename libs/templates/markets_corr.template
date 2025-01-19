@@ -8,11 +8,17 @@
 </head>
 <body>
     <div class="container-fluid">
-        <div class="row">
+        <div class="row" style="margin-bottom: 30px;">
             <h3>{{ loaded_date }}</h3>
+        </div>
+        <div class="row">
+            <h5>{{ macro_last_date }}</h5>
         </div>
         <div class="row" style="display:contents">
             <div id="container-macro" style="height: 500px"></div>
+        </div>
+        <div class="row">
+            <h5>{{ sectors_last_date }}</h5>
         </div>
         <div class="row" style="display:contents">
             <div id="container-sectors" style="height: 700px"></div>

@@ -55,15 +55,16 @@ class MarketRunningCorr(MarketCorrBase):
     def __init__(self, tickers, start_date, end_date=None, window=30, interval=1) -> None:
         end_date = self._today_if_none(end_date)
         
-        self.tickers = tickers
-        self.start_date = start_date
-        self.end_date = end_date
-        self.window = window
-        self.interval = interval
-        self._result = None
-        self.result = None
-        self.corr_changes = None
-        self.changes_pct = None
+        self.tickers        = tickers
+        self.start_date     = start_date
+        self.end_date       = end_date
+        self.window         = window
+        self.interval       = interval
+        self._result        = None
+        self.result         = None
+        self.corr_changes   = None
+        self.changes_pct    = None
+        self.last_date      = None
         
     def run(self):
         start_date_obj = datetime.strptime(self.start_date, DATE_FORMAT)
@@ -85,10 +86,12 @@ class MarketRunningCorr(MarketCorrBase):
         
         last_df = df.fillna(method='ffill').tail(2)['Adj Close']
         changes_pct_df = ( ( last_df / last_df.shift(1) ) - 1 ) * 100
-        changes_pct = changes_pct_df.dropna().to_dict("records")[0]
+        changes_pct_df.dropna(inplace=True)
+        changes_pct = changes_pct_df.to_dict("records")[0]
         
         self.changes_pct = changes_pct
         self._result = result
+        self.last_date = changes_pct_df.index[-1].date()
         
     def _process_t_1(self):
         corr_changes = defaultdict( lambda: defaultdict( float ) )
@@ -119,7 +122,7 @@ class MarketRunningCorr(MarketCorrBase):
 class HTMLTemplate:
     
     TEMPLATE_DIR = "C:\\Users\\User\\Desktop\\projects\\trading\\libs\\templates\\"
-    OUTPUT_DIR = "C:\\Users\\User\\Desktop\\projects\\trading\\apps\\"
+    OUTPUT_DIR = "C:\\Users\\User\\Desktop\\projects\\trading\\ui\\"
     
     def __init__(self, **kwargs) -> None:
         self.context = kwargs

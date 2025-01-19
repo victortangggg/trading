@@ -7,7 +7,7 @@ import warnings
 warnings.filterwarnings("ignore")
 
 #PLOT_EXPORT_DIR = "C:\\Users\\User\\Desktop\\projects\\trading\\backtests"
-PLOT_EXPORT_DIR = "C:\\Users\\User\\Desktop\\projects\\trading\\apps\\backtests"
+PLOT_EXPORT_DIR = "C:\\Users\\User\\Desktop\\projects\\trading\\ui\\backtests"
 
 class BTData:
     def __init__(self, ticker, start_date=None, end_date=None, split_yearly=True) -> None:
@@ -51,6 +51,8 @@ class Backtester:
             self.strategy_name = strategy.NAME.replace(' ', '_')
         except:
             raise ValueError("Please indicate name in your Strategy class")
+        
+        data.columns = [ col.capitalize() if col in {"open","high","low","close","volume"} else col for col in data.columns ]
         
         self.data = data
         self.capital = capital
