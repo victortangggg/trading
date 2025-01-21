@@ -6,6 +6,8 @@ import matplotlib.pyplot as plt
 import warnings
 warnings.filterwarnings("ignore")
 
+DATE_FORMATS = ["%d/%m/%Y", "%Y-%m-%d"]
+
 def _match_regex(cols, cols_regex, to_set=False):
     result = []
     for col in cols:
@@ -47,11 +49,25 @@ def plot_graph(df, start=None, end=None, selected_cols_regex=None, panel_cols_re
           addplot = add_plots,
           volume=True, figsize=(21, height))
     
+def convert_to_dateobj(date_str):
+    for date_format in DATE_FORMATS:
+        try:
+            dateobj = datetime.strptime(date_str, date_format)
+            return dateobj
+        except ValueError:
+            continue
+        
+    # Raise an error if no formats match
+    raise ValueError(f"Date string '{date_str}' is not in a recognized format.")
+    
+def dateformat(date_str):
+    dateobj = convert_to_dateobj(date_str=date_str)
+    return dateobj.strftime('%Y-%m-%d')
     
 def add_to_date(date_str, delta=None):
     # {'days: 365}
     delta = delta or {'days': 365}
-    date_obj = datetime.strptime(date_str, '%Y-%m-%d')
+    date_obj = convert_to_dateobj(date_str=date_str) #datetime.strptime(date_str, '%Y-%m-%d')
     new_date = date_obj + timedelta(**delta)
     new_date_str = new_date.strftime('%Y-%m-%d')
     return new_date_str

@@ -27,3 +27,6 @@ https://github.com/stefan-jansen/machine-learning-for-trading
 
 
 https://neptune.ai/blog/anomaly-detection-in-time-series
+
+
+identifier=VOO:price=550.0:time=1737161999000:exchange=PCX:quoteType=QuoteType.ETF:marketState=MarketState.POST:changePercent=0.09827429801225662:change=0.53997802734375:priceHint=2

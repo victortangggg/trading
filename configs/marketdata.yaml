@@ -1,0 +1,14 @@
+
+symbols:
+  - VOO
+  - TQQQ
+  - BTC-USD
+  - SGD=X
+  - NIO
+  - ARKF
+
+redis:
+  host: localhost
+  port: 6379
+  db: 0
+  channel: marketdata

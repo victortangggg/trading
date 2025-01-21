@@ -5,7 +5,8 @@ setup(
     packages=find_packages(),
     entry_points={
         'console_scripts': [
-            'trates=libs.cli:main', 
+            'marketdata=libs.marketdata:main',
+            'pnl=libs.pnl:main'
         ],
     },
 )
