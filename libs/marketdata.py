@@ -24,7 +24,7 @@ class MarketData:
         return yaml.safe_load( Path( os.path.join(CONFIG_DIR_PATH, configfile ) ).read_text() )
     
     def _on_quote(self, quote):
-        print(f"received: { quote }")
+        #print(f"received: { quote }")
         message = ":".join([ f"{ field }={ quote.__getattr__(field) }" for field in quote.__fields__ if quote.__getattr__(field) ])
         self.redis_client.publish(channel=self.channel, message=message)
         
