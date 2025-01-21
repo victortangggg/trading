@@ -2,6 +2,7 @@ import re
 import mplfinance as fplt
 from datetime import datetime, timedelta
 import matplotlib.pyplot as plt
+import numpy as np
 
 import warnings
 warnings.filterwarnings("ignore")
@@ -61,7 +62,11 @@ def convert_to_dateobj(date_str):
     raise ValueError(f"Date string '{date_str}' is not in a recognized format.")
     
 def dateformat(date_str):
-    dateobj = convert_to_dateobj(date_str=date_str)
+    if not date_str or isinstance(date_str, float):
+        current_year = datetime.now().year
+        dateobj = datetime(current_year, 1, 1)
+    else:
+        dateobj = convert_to_dateobj(date_str=date_str)
     return dateobj.strftime('%Y-%m-%d')
     
 def add_to_date(date_str, delta=None):

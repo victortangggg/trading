@@ -1,8 +1,10 @@
 from rich.live import Live
 from rich.table import Table
+from rich.layout import Layout
 import redis
 import pandas as pd
 import yfinance
+from functools import lru_cache
 
 import libs.utils
 
@@ -24,6 +26,7 @@ def style_values( row, columns ):
         except ValueError:
             continue
         
+@lru_cache
 def get_past_fx( date_str ):
     end = libs.utils.add_to_date(date_str=date_str)
     df = yfinance.ticker.Ticker("SGD=X").history(start=date_str, end=end)
@@ -37,9 +40,18 @@ class PnlRunner:
         self.pubsub.subscribe("marketdata")
         self.market_prices = {}
         
+    def generate_layout(self):
+        layout = Layout(name="pnl")
+        layout.split_column(
+            Layout(name="upper"),
+            Layout(name="lower")
+        )
+        return layout
+        
     def generate_table(self) -> Table:
         """Make a new table."""
         bookdf = pd.read_csv(f"{CONFIG_DIR_PATH}/book_saxo.csv")
+        bookdf = bookdf[ bookdf['symbol'] != 'ACCOUNTCASH']
         bookdf['open_date']     = bookdf['open_date'].apply( libs.utils.dateformat )
         bookdf['_SGD=X']        = bookdf['open_date'].apply( get_past_fx )
         bookdf['SGD=X']         = self.market_prices.get("SGD=X")
@@ -62,7 +74,9 @@ class PnlRunner:
             style_values(rows, bookdf.columns)
             table.add_row( *rows )
         
-        return table
+        layout = self.generate_layout()
+        layout['upper'].update(table)
+        return layout
 
     def run(self):
         with Live(self.generate_table(), refresh_per_second=1) as live:
