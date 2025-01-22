@@ -1,0 +1,4 @@
+redis==5.2.1
+yflive==1.0.0
+protobuf==3.20.1
+PyYAML==6.0.1

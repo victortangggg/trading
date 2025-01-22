@@ -4,24 +4,29 @@ import yaml
 from pathlib import Path
 import os
 import redis
+import sys
 
 CONFIG_DIR_PATH = r"C:\Users\User\Desktop\projects\trading\configs"
 
 class MarketData:
     
-    def __init__(self, configfile="marketdata.yaml"):
-        self.config = self._read_config(configfile=configfile)
+    def __init__(self, configPath=None, configfile=None):
+        configPath = configPath or CONFIG_DIR_PATH
+        configfile = configfile or "marketdata.yaml"
+        self.config = self._read_config(configPath=configPath, configfile=configfile)
         self.redis_client = redis.StrictRedis(
             host=self.config['redis']['host'],
             port=self.config['redis']['port'],
             db=self.config['redis']['db']
         )
         self.channel = self.config['redis']['channel']
-        self.redis_client.ping()
+        #self.redis_client.ping()
             
     
-    def _read_config(self, configfile):
-        return yaml.safe_load( Path( os.path.join(CONFIG_DIR_PATH, configfile ) ).read_text() )
+    def _read_config(self, configPath, configfile):
+        config_full_path = os.path.join(configPath, configfile )
+        print(f"reading...{config_full_path}")
+        return yaml.safe_load( Path( config_full_path ).read_text() )
     
     def _on_quote(self, quote):
         #print(f"received: { quote }")
@@ -37,7 +42,13 @@ class MarketData:
         
         
 def main():
-    md = MarketData()
+    configPath = None
+    configFile = None
+    if len(sys.argv) > 1:
+        configPath = sys.argv[1]
+    if len(sys.argv) > 2:
+        configFile = sys.argv[2]
+    md = MarketData(configPath=configPath, configfile=configFile)
     md.run()
         
 if __name__ == "__main__":
