@@ -6,7 +6,7 @@ setup(
     entry_points={
         'console_scripts': [
             'marketdata=libs.marketdata:main',
-            'pnl=libs.pnl:main'
+            'liverisk=libs.liverisk:main'
         ],
     },
 )
