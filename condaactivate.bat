@@ -1,0 +1,1 @@
+conda activate  %HOMEPATH%\anaconda3\envs\research

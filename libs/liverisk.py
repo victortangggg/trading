@@ -31,21 +31,31 @@ def style_values( row, columns ):
 @lru_cache
 def get_past_fx( date_str ):
     end = libs.utils.add_to_date(date_str=date_str)
-    df = yfinance.ticker.Ticker("SGD=X").history(start=date_str, end=end)
+    yf_ticker_obj = yfinance.ticker.Ticker("SGD=X")
+    df = yf_ticker_obj.history(start=date_str, end=end)
+    if df.empty:
+        return yf_ticker_obj.info["ask"]
     return float( df[['Open', 'High', 'Low', 'Close']].mean(axis=1).values[0] )
 
-class PnlRunner:
+
+class LiveRiskRunner:
     
     def __init__(self, bookfile="book_saxo.csv"):
         redis_client = redis.StrictRedis(host="localhost", port=6379, db=0)
         self.pubsub = redis_client.pubsub()
         self.pubsub.subscribe("marketdata")
         self.market_prices = {}
+        self.lowest_market_prices = {}
         self.book_file_path = f"{CONFIG_DIR_PATH}/{bookfile}"
+        self.stoploss_threshold = 0.01
+        
         df = pd.read_csv( self.book_file_path )
         symbols = [ symbol for symbol in list(df['symbol'].values) if symbol != "ACCOUNTCASH"]
         for symbol in symbols:
-            self.market_prices[symbol] = yfinance.ticker.Ticker( symbol ).info["regularMarketPreviousClose"]
+            ticker_info = yfinance.ticker.Ticker( symbol ).info
+            self.market_prices[symbol] = float(ticker_info["regularMarketPreviousClose"])
+            self.lowest_market_prices[symbol] = ticker_info['dayLow']
+        
         
     def generate_layout(self):
         layout = Layout(name="pnl")
@@ -54,6 +64,7 @@ class PnlRunner:
             Layout(name="lower")
         )
         return layout
+        
         
     def generate_table(self) -> Table:
         bookdf = pd.read_csv( self.book_file_path )
@@ -65,14 +76,15 @@ class PnlRunner:
         bookdf['open_date']     = bookdf['open_date'].apply( libs.utils.dateformat )
         bookdf['_SGD=X']        = bookdf['open_date'].apply( get_past_fx )
         bookdf['SGD=X']         = self.market_prices.get("SGD=X")
-        bookdf['cost_value']    = bookdf['cost_price'] * bookdf['qty']
+        bookdf['cost_value']    = bookdf['open_price'] * bookdf['qty']
         bookdf['price']         = bookdf['symbol'].map( self.market_prices )
         bookdf['mtm_value']     = bookdf['price'] * bookdf['qty']
         bookdf['mtm_value_sgd'] = bookdf['mtm_value'] * bookdf['SGD=X']
         bookdf['pnl']           = bookdf['mtm_value'] - bookdf['cost_value']
-        bookdf['returns']       = 100 * (( bookdf['price'] / bookdf['cost_price'] ) - 1)
+        bookdf['returns']       = 100 * (( bookdf['price'] / bookdf['open_price'] ) - 1)
         bookdf['pnl_sgd']       = bookdf['pnl'] * bookdf['SGD=X']
-        bookdf['returns_fx']        = 100 * (( bookdf['SGD=X'] / bookdf['_SGD=X'] ) - 1)
+        bookdf['returns_fx']    = 100 * (( bookdf['SGD=X'] / bookdf['_SGD=X'] ) - 1)
+        bookdf['sl']            = (1-self.stoploss_threshold) * bookdf['symbol'].map( self.lowest_market_prices ).clip(lower=bookdf['open_price'])
         
         mtm_value_sgd_total = bookdf['mtm_value_sgd'].sum()        
         if mtm_value_sgd_total:
@@ -101,7 +113,7 @@ class PnlRunner:
         cashdf['open_date']     = cashdf['open_date'].apply( libs.utils.dateformat )
         cashdf['_SGD=X']        = cashdf['open_date'].apply( get_past_fx )
         cashdf['SGD=X']         = self.market_prices.get("SGD=X")
-        cashdf['USD']           = cashdf['cost_price'] * cashdf['qty']
+        cashdf['USD']           = cashdf['open_price'] * cashdf['qty']
         cashdf['SGD']           = cashdf['USD'] * cashdf['SGD=X']
         cashdf['returns_fx']    = 100 * (( cashdf['SGD=X'] / cashdf['_SGD=X'] ) - 1)
         cashdf['equity+cash']   = cashdf['SGD'] + bookdf['mtm_value_sgd'].sum()
@@ -121,6 +133,12 @@ class PnlRunner:
         layout['upper'].update(table)
         layout['lower'].update(cashtable)
         return layout
+    
+    
+    def _lowest_market_prices(self, symbol, price):
+        if symbol not in self.lowest_market_prices or price < self.lowest_market_prices.get(symbol) :
+            self.lowest_market_prices[ symbol ] = price
+
 
     def run(self):
         with Live(self.generate_table(), refresh_per_second=1) as live:
@@ -130,11 +148,17 @@ class PnlRunner:
                     if data:
                         pairs = data.strip(":").split(":")
                         data = {key: value for key, value in (pair.split("=", 1) for pair in pairs)}
-                        self.market_prices.update({ data['identifier']: float(data['price']) })
+                        symbol = data['identifier']
+                        price = float( data['price'] )
+                        self.market_prices.update({ symbol: price })
+                        self._lowest_market_prices(symbol, price)
                         live.update(self.generate_table())
 
+
 def main():
-    pnlRunner = PnlRunner()
-    pnlRunner.run()
+    liveRiskRunner = LiveRiskRunner()
+    liveRiskRunner.run()
     
     
+if __name__ == "__main__":
+    main()
