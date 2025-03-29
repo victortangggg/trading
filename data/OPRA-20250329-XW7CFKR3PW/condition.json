@@ -1,0 +1,102 @@
+[
+    {
+        "date": "2025-02-26",
+        "condition": "degraded",
+        "last_modified_date": "2025-03-02"
+    },
+    {
+        "date": "2025-02-27",
+        "condition": "degraded",
+        "last_modified_date": "2025-03-04"
+    },
+    {
+        "date": "2025-02-28",
+        "condition": "degraded",
+        "last_modified_date": "2025-03-04"
+    },
+    {
+        "date": "2025-03-03",
+        "condition": "degraded",
+        "last_modified_date": "2025-03-08"
+    },
+    {
+        "date": "2025-03-04",
+        "condition": "degraded",
+        "last_modified_date": "2025-03-09"
+    },
+    {
+        "date": "2025-03-05",
+        "condition": "degraded",
+        "last_modified_date": "2025-03-16"
+    },
+    {
+        "date": "2025-03-06",
+        "condition": "degraded",
+        "last_modified_date": "2025-03-22"
+    },
+    {
+        "date": "2025-03-07",
+        "condition": "degraded",
+        "last_modified_date": "2025-03-20"
+    },
+    {
+        "date": "2025-03-10",
+        "condition": "degraded",
+        "last_modified_date": "2025-03-22"
+    },
+    {
+        "date": "2025-03-11",
+        "condition": "degraded",
+        "last_modified_date": "2025-03-21"
+    },
+    {
+        "date": "2025-03-12",
+        "condition": "degraded",
+        "last_modified_date": "2025-03-19"
+    },
+    {
+        "date": "2025-03-13",
+        "condition": "degraded",
+        "last_modified_date": "2025-03-19"
+    },
+    {
+        "date": "2025-03-14",
+        "condition": "degraded",
+        "last_modified_date": "2025-03-18"
+    },
+    {
+        "date": "2025-03-17",
+        "condition": "degraded",
+        "last_modified_date": "2025-03-23"
+    },
+    {
+        "date": "2025-03-18",
+        "condition": "degraded",
+        "last_modified_date": "2025-03-21"
+    },
+    {
+        "date": "2025-03-19",
+        "condition": "degraded",
+        "last_modified_date": "2025-03-22"
+    },
+    {
+        "date": "2025-03-20",
+        "condition": "degraded",
+        "last_modified_date": "2025-03-23"
+    },
+    {
+        "date": "2025-03-21",
+        "condition": "degraded",
+        "last_modified_date": "2025-03-25"
+    },
+    {
+        "date": "2025-03-24",
+        "condition": "degraded",
+        "last_modified_date": "2025-03-27"
+    },
+    {
+        "date": "2025-03-25",
+        "condition": "degraded",
+        "last_modified_date": "2025-03-28"
+    }
+]

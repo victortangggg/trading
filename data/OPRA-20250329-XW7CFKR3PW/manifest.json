@@ -1,0 +1,50 @@
+{
+    "job_id": "OPRA-20250329-XW7CFKR3PW",
+    "files": [
+        {
+            "filename": "condition.json",
+            "size": 2382,
+            "hash": "sha256:19770c3be1d22b9b277c476508b1b8edfae119098d784cd117200c0f891051e6",
+            "urls": {
+                "https": "https://api.databento.com/v0/batch/download/4CDVM53M/OPRA-20250329-XW7CFKR3PW/condition.json",
+                "ftp": "ftp://ftp.databento.com/4CDVM53M/OPRA-20250329-XW7CFKR3PW/condition.json"
+            }
+        },
+        {
+            "filename": "metadata.json",
+            "size": 687,
+            "hash": "sha256:543608941dbd429b0e16d63011caf0a29a884505761801b9d60e71c5753d2cc7",
+            "urls": {
+                "https": "https://api.databento.com/v0/batch/download/4CDVM53M/OPRA-20250329-XW7CFKR3PW/metadata.json",
+                "ftp": "ftp://ftp.databento.com/4CDVM53M/OPRA-20250329-XW7CFKR3PW/metadata.json"
+            }
+        },
+        {
+            "filename": "symbology.json",
+            "size": 4447763,
+            "hash": "sha256:f83eb3e58a9de0f375eaf58f256c0261c87571288318ffa8f353c38b525eac70",
+            "urls": {
+                "https": "https://api.databento.com/v0/batch/download/4CDVM53M/OPRA-20250329-XW7CFKR3PW/symbology.json",
+                "ftp": "ftp://ftp.databento.com/4CDVM53M/OPRA-20250329-XW7CFKR3PW/symbology.json"
+            }
+        },
+        {
+            "filename": "symbology.csv",
+            "size": 2000050,
+            "hash": "sha256:43de5ce6208e42e3c936e8e88d8771a2e82cd3f96b4377b4723adeb54971636d",
+            "urls": {
+                "https": "https://api.databento.com/v0/batch/download/4CDVM53M/OPRA-20250329-XW7CFKR3PW/symbology.csv",
+                "ftp": "ftp://ftp.databento.com/4CDVM53M/OPRA-20250329-XW7CFKR3PW/symbology.csv"
+            }
+        },
+        {
+            "filename": "opra-pillar-20250226-20250325.ohlcv-1h.csv",
+            "size": 39850094,
+            "hash": "sha256:11724cd929df98129523da432fbb95e2934dbb1ebd4e973740dff81e66131d6b",
+            "urls": {
+                "https": "https://api.databento.com/v0/batch/download/4CDVM53M/OPRA-20250329-XW7CFKR3PW/opra-pillar-20250226-20250325.ohlcv-1h.csv",
+                "ftp": "ftp://ftp.databento.com/4CDVM53M/OPRA-20250329-XW7CFKR3PW/opra-pillar-20250226-20250325.ohlcv-1h.csv"
+            }
+        }
+    ]
+}

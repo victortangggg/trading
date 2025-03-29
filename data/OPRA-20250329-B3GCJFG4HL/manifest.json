@@ -1,0 +1,221 @@
+{
+    "job_id": "OPRA-20250329-B3GCJFG4HL",
+    "files": [
+        {
+            "filename": "condition.json",
+            "size": 2382,
+            "hash": "sha256:19770c3be1d22b9b277c476508b1b8edfae119098d784cd117200c0f891051e6",
+            "urls": {
+                "https": "https://api.databento.com/v0/batch/download/4CDVM53M/OPRA-20250329-B3GCJFG4HL/condition.json",
+                "ftp": "ftp://ftp.databento.com/4CDVM53M/OPRA-20250329-B3GCJFG4HL/condition.json"
+            }
+        },
+        {
+            "filename": "metadata.json",
+            "size": 688,
+            "hash": "sha256:42a3d57c03b53d1f9eee752fcea0f3cf6e3660639b05d12be6b5f15b557769f0",
+            "urls": {
+                "https": "https://api.databento.com/v0/batch/download/4CDVM53M/OPRA-20250329-B3GCJFG4HL/metadata.json",
+                "ftp": "ftp://ftp.databento.com/4CDVM53M/OPRA-20250329-B3GCJFG4HL/metadata.json"
+            }
+        },
+        {
+            "filename": "symbology.json",
+            "size": 4447763,
+            "hash": "sha256:6f733f6f0a0d5dbc27a7b8334eb550d7b860f5558fe990bd56aeaa12e69adf1b",
+            "urls": {
+                "https": "https://api.databento.com/v0/batch/download/4CDVM53M/OPRA-20250329-B3GCJFG4HL/symbology.json",
+                "ftp": "ftp://ftp.databento.com/4CDVM53M/OPRA-20250329-B3GCJFG4HL/symbology.json"
+            }
+        },
+        {
+            "filename": "symbology.csv",
+            "size": 2000050,
+            "hash": "sha256:c31bd8d6fe88fa5e65f59e976c53fdf3e9a9eef4fdbf675d86446550d4fab0a6",
+            "urls": {
+                "https": "https://api.databento.com/v0/batch/download/4CDVM53M/OPRA-20250329-B3GCJFG4HL/symbology.csv",
+                "ftp": "ftp://ftp.databento.com/4CDVM53M/OPRA-20250329-B3GCJFG4HL/symbology.csv"
+            }
+        },
+        {
+            "filename": "opra-pillar-20250226.trades.csv.zst",
+            "size": 1104656,
+            "hash": "sha256:345b8077a218ab0f5d117133a75e6da6d6b60592f3ce7022f77378be880f59a4",
+            "urls": {
+                "https": "https://api.databento.com/v0/batch/download/4CDVM53M/OPRA-20250329-B3GCJFG4HL/opra-pillar-20250226.trades.csv.zst",
+                "ftp": "ftp://ftp.databento.com/4CDVM53M/OPRA-20250329-B3GCJFG4HL/opra-pillar-20250226.trades.csv.zst"
+            }
+        },
+        {
+            "filename": "opra-pillar-20250227.trades.csv.zst",
+            "size": 1587190,
+            "hash": "sha256:e33e5661175a58d97fa3c375153d4814b58faa02c43fcb39451279998b65aedb",
+            "urls": {
+                "https": "https://api.databento.com/v0/batch/download/4CDVM53M/OPRA-20250329-B3GCJFG4HL/opra-pillar-20250227.trades.csv.zst",
+                "ftp": "ftp://ftp.databento.com/4CDVM53M/OPRA-20250329-B3GCJFG4HL/opra-pillar-20250227.trades.csv.zst"
+            }
+        },
+        {
+            "filename": "opra-pillar-20250228.trades.csv.zst",
+            "size": 1569483,
+            "hash": "sha256:e2276888751bb65b172612854d3b7d21e673a82b0f7a9863026ffb45f8b281be",
+            "urls": {
+                "https": "https://api.databento.com/v0/batch/download/4CDVM53M/OPRA-20250329-B3GCJFG4HL/opra-pillar-20250228.trades.csv.zst",
+                "ftp": "ftp://ftp.databento.com/4CDVM53M/OPRA-20250329-B3GCJFG4HL/opra-pillar-20250228.trades.csv.zst"
+            }
+        },
+        {
+            "filename": "opra-pillar-20250303.trades.csv.zst",
+            "size": 1362516,
+            "hash": "sha256:f64f4c65e636bfe72aabf195c0473b64ada126e6cf0563d5854aa90e04a267eb",
+            "urls": {
+                "https": "https://api.databento.com/v0/batch/download/4CDVM53M/OPRA-20250329-B3GCJFG4HL/opra-pillar-20250303.trades.csv.zst",
+                "ftp": "ftp://ftp.databento.com/4CDVM53M/OPRA-20250329-B3GCJFG4HL/opra-pillar-20250303.trades.csv.zst"
+            }
+        },
+        {
+            "filename": "opra-pillar-20250304.trades.csv.zst",
+            "size": 1485963,
+            "hash": "sha256:80c0fe45f261df3b8bd856105675fb7306b1e55cb5eb7f1fc2ffc138427820b8",
+            "urls": {
+                "https": "https://api.databento.com/v0/batch/download/4CDVM53M/OPRA-20250329-B3GCJFG4HL/opra-pillar-20250304.trades.csv.zst",
+                "ftp": "ftp://ftp.databento.com/4CDVM53M/OPRA-20250329-B3GCJFG4HL/opra-pillar-20250304.trades.csv.zst"
+            }
+        },
+        {
+            "filename": "opra-pillar-20250305.trades.csv.zst",
+            "size": 1150733,
+            "hash": "sha256:5c013b32893e51820d3ba55579fa94d8f0295dd513464f117fbcb9e47ac71cee",
+            "urls": {
+                "https": "https://api.databento.com/v0/batch/download/4CDVM53M/OPRA-20250329-B3GCJFG4HL/opra-pillar-20250305.trades.csv.zst",
+                "ftp": "ftp://ftp.databento.com/4CDVM53M/OPRA-20250329-B3GCJFG4HL/opra-pillar-20250305.trades.csv.zst"
+            }
+        },
+        {
+            "filename": "opra-pillar-20250306.trades.csv.zst",
+            "size": 1530140,
+            "hash": "sha256:961430694a7417424613bfa9b996d62b84f7623e5b669a995e8f1203573bf881",
+            "urls": {
+                "https": "https://api.databento.com/v0/batch/download/4CDVM53M/OPRA-20250329-B3GCJFG4HL/opra-pillar-20250306.trades.csv.zst",
+                "ftp": "ftp://ftp.databento.com/4CDVM53M/OPRA-20250329-B3GCJFG4HL/opra-pillar-20250306.trades.csv.zst"
+            }
+        },
+        {
+            "filename": "opra-pillar-20250307.trades.csv.zst",
+            "size": 1861813,
+            "hash": "sha256:066c2222c54f8cd78b4522c6645e8c05fdf0cc7e4d0662da82243bc82c685610",
+            "urls": {
+                "https": "https://api.databento.com/v0/batch/download/4CDVM53M/OPRA-20250329-B3GCJFG4HL/opra-pillar-20250307.trades.csv.zst",
+                "ftp": "ftp://ftp.databento.com/4CDVM53M/OPRA-20250329-B3GCJFG4HL/opra-pillar-20250307.trades.csv.zst"
+            }
+        },
+        {
+            "filename": "opra-pillar-20250310.trades.csv.zst",
+            "size": 2055134,
+            "hash": "sha256:4d63539d27a223d857223ba2d515ab94f85bdc5f4c03440d0f2f68962fa0cc21",
+            "urls": {
+                "https": "https://api.databento.com/v0/batch/download/4CDVM53M/OPRA-20250329-B3GCJFG4HL/opra-pillar-20250310.trades.csv.zst",
+                "ftp": "ftp://ftp.databento.com/4CDVM53M/OPRA-20250329-B3GCJFG4HL/opra-pillar-20250310.trades.csv.zst"
+            }
+        },
+        {
+            "filename": "opra-pillar-20250311.trades.csv.zst",
+            "size": 1732017,
+            "hash": "sha256:ec9e60c590716ea0c36a4d93ea175336bf31e8bb76475056fa8f022cbc1d6d6b",
+            "urls": {
+                "https": "https://api.databento.com/v0/batch/download/4CDVM53M/OPRA-20250329-B3GCJFG4HL/opra-pillar-20250311.trades.csv.zst",
+                "ftp": "ftp://ftp.databento.com/4CDVM53M/OPRA-20250329-B3GCJFG4HL/opra-pillar-20250311.trades.csv.zst"
+            }
+        },
+        {
+            "filename": "opra-pillar-20250312.trades.csv.zst",
+            "size": 1205900,
+            "hash": "sha256:cf838ba53fd75058a5283a02ada5ee4c0cdd53f50c0890d97734338b9e62b9ad",
+            "urls": {
+                "https": "https://api.databento.com/v0/batch/download/4CDVM53M/OPRA-20250329-B3GCJFG4HL/opra-pillar-20250312.trades.csv.zst",
+                "ftp": "ftp://ftp.databento.com/4CDVM53M/OPRA-20250329-B3GCJFG4HL/opra-pillar-20250312.trades.csv.zst"
+            }
+        },
+        {
+            "filename": "opra-pillar-20250313.trades.csv.zst",
+            "size": 1322448,
+            "hash": "sha256:d892b62fdf506e2c4181b893a9640b4f56ee8e0ef75fe3abcf1d836438b53f37",
+            "urls": {
+                "https": "https://api.databento.com/v0/batch/download/4CDVM53M/OPRA-20250329-B3GCJFG4HL/opra-pillar-20250313.trades.csv.zst",
+                "ftp": "ftp://ftp.databento.com/4CDVM53M/OPRA-20250329-B3GCJFG4HL/opra-pillar-20250313.trades.csv.zst"
+            }
+        },
+        {
+            "filename": "opra-pillar-20250314.trades.csv.zst",
+            "size": 1451894,
+            "hash": "sha256:378dbed78b0cdd8dfbc707900c3663e4f537acab715a78ff96514cff59af19da",
+            "urls": {
+                "https": "https://api.databento.com/v0/batch/download/4CDVM53M/OPRA-20250329-B3GCJFG4HL/opra-pillar-20250314.trades.csv.zst",
+                "ftp": "ftp://ftp.databento.com/4CDVM53M/OPRA-20250329-B3GCJFG4HL/opra-pillar-20250314.trades.csv.zst"
+            }
+        },
+        {
+            "filename": "opra-pillar-20250317.trades.csv.zst",
+            "size": 975070,
+            "hash": "sha256:f6102f0ce44d21a2ba1cc165c322bd112fe7ceafd6f3daf56229fc29c12c6350",
+            "urls": {
+                "https": "https://api.databento.com/v0/batch/download/4CDVM53M/OPRA-20250329-B3GCJFG4HL/opra-pillar-20250317.trades.csv.zst",
+                "ftp": "ftp://ftp.databento.com/4CDVM53M/OPRA-20250329-B3GCJFG4HL/opra-pillar-20250317.trades.csv.zst"
+            }
+        },
+        {
+            "filename": "opra-pillar-20250318.trades.csv.zst",
+            "size": 988601,
+            "hash": "sha256:e30c98a253ef90d90b5b9c4a3b5f63ac41f88ce5cf16365e129cb2c7831cc234",
+            "urls": {
+                "https": "https://api.databento.com/v0/batch/download/4CDVM53M/OPRA-20250329-B3GCJFG4HL/opra-pillar-20250318.trades.csv.zst",
+                "ftp": "ftp://ftp.databento.com/4CDVM53M/OPRA-20250329-B3GCJFG4HL/opra-pillar-20250318.trades.csv.zst"
+            }
+        },
+        {
+            "filename": "opra-pillar-20250319.trades.csv.zst",
+            "size": 1059085,
+            "hash": "sha256:6666c9ad1f3d29d8144b9c728555baf82b6ef5fe0f8a2788c4b21fda6e6af7b1",
+            "urls": {
+                "https": "https://api.databento.com/v0/batch/download/4CDVM53M/OPRA-20250329-B3GCJFG4HL/opra-pillar-20250319.trades.csv.zst",
+                "ftp": "ftp://ftp.databento.com/4CDVM53M/OPRA-20250329-B3GCJFG4HL/opra-pillar-20250319.trades.csv.zst"
+            }
+        },
+        {
+            "filename": "opra-pillar-20250320.trades.csv.zst",
+            "size": 965852,
+            "hash": "sha256:b465c8e915466f93814ffaf582e5379ed4e2cd8b2cf8081db4d77e62ba09ada3",
+            "urls": {
+                "https": "https://api.databento.com/v0/batch/download/4CDVM53M/OPRA-20250329-B3GCJFG4HL/opra-pillar-20250320.trades.csv.zst",
+                "ftp": "ftp://ftp.databento.com/4CDVM53M/OPRA-20250329-B3GCJFG4HL/opra-pillar-20250320.trades.csv.zst"
+            }
+        },
+        {
+            "filename": "opra-pillar-20250321.trades.csv.zst",
+            "size": 1227287,
+            "hash": "sha256:43326356c09c9b7160ba2d8d3529a97cdd58645b4e06f6f791906d492b5f0e55",
+            "urls": {
+                "https": "https://api.databento.com/v0/batch/download/4CDVM53M/OPRA-20250329-B3GCJFG4HL/opra-pillar-20250321.trades.csv.zst",
+                "ftp": "ftp://ftp.databento.com/4CDVM53M/OPRA-20250329-B3GCJFG4HL/opra-pillar-20250321.trades.csv.zst"
+            }
+        },
+        {
+            "filename": "opra-pillar-20250324.trades.csv.zst",
+            "size": 1109833,
+            "hash": "sha256:47a7fb7dccdc59b0f0637aaf54500b5e5ca4a6e4ec25047ab77baba28886d9ad",
+            "urls": {
+                "https": "https://api.databento.com/v0/batch/download/4CDVM53M/OPRA-20250329-B3GCJFG4HL/opra-pillar-20250324.trades.csv.zst",
+                "ftp": "ftp://ftp.databento.com/4CDVM53M/OPRA-20250329-B3GCJFG4HL/opra-pillar-20250324.trades.csv.zst"
+            }
+        },
+        {
+            "filename": "opra-pillar-20250325.trades.csv.zst",
+            "size": 699804,
+            "hash": "sha256:6bf3e99342c883109ea4a4c5e6fc496e0fb84c1f65c805dfd03315ecbc5aef99",
+            "urls": {
+                "https": "https://api.databento.com/v0/batch/download/4CDVM53M/OPRA-20250329-B3GCJFG4HL/opra-pillar-20250325.trades.csv.zst",
+                "ftp": "ftp://ftp.databento.com/4CDVM53M/OPRA-20250329-B3GCJFG4HL/opra-pillar-20250325.trades.csv.zst"
+            }
+        }
+    ]
+}

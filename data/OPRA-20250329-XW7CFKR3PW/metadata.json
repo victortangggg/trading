@@ -1,0 +1,28 @@
+{
+    "version": 1,
+    "job_id": "OPRA-20250329-XW7CFKR3PW",
+    "query": {
+        "dataset": "OPRA.PILLAR",
+        "schema": "ohlcv-1h",
+        "symbols": [
+            "TQQQ.OPT"
+        ],
+        "stype_in": "parent",
+        "stype_out": "instrument_id",
+        "start": 1740528000000000000,
+        "end": 1742947200000000000,
+        "limit": null,
+        "encoding": "csv",
+        "compression": null
+    },
+    "customizations": {
+        "pretty_px": true,
+        "pretty_ts": true,
+        "map_symbols": true,
+        "split_symbols": false,
+        "split_duration": null,
+        "split_size": null,
+        "packaging": null,
+        "delivery": "download"
+    }
+}
