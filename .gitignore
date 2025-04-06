@@ -5,3 +5,4 @@ libs.egg-info
 */.log
 archive
 test.*
+*/book_saxo.csv
