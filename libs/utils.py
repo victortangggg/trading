@@ -9,6 +9,7 @@ warnings.filterwarnings("ignore")
 
 DATE_FORMATS = ["%d/%m/%Y", "%Y-%m-%d"]
 
+
 def _match_regex(cols, cols_regex, to_set=False):
     result = []
     for col in cols:
@@ -21,6 +22,7 @@ def _match_regex(cols, cols_regex, to_set=False):
         result = set( result )
         
     return result
+
 
 def plot_graph(df, start=None, end=None, selected_cols_regex=None, panel_cols_regex=None):
     default_cols = {'open', 'high', 'low', 'close', 'volume', 'split_ratio', 'dividend', 'capital_gains'}
@@ -50,6 +52,7 @@ def plot_graph(df, start=None, end=None, selected_cols_regex=None, panel_cols_re
           addplot = add_plots,
           volume=True, figsize=(21, height))
     
+    
 def convert_to_dateobj(date_str):
     for date_format in DATE_FORMATS:
         try:
@@ -61,6 +64,7 @@ def convert_to_dateobj(date_str):
     # Raise an error if no formats match
     raise ValueError(f"Date string '{date_str}' is not in a recognized format.")
     
+    
 def dateformat(date_str):
     if not date_str or isinstance(date_str, float):
         current_year = datetime.now().year
@@ -68,6 +72,7 @@ def dateformat(date_str):
     else:
         dateobj = convert_to_dateobj(date_str=date_str)
     return dateobj.strftime('%Y-%m-%d')
+    
     
 def add_to_date(date_str, delta=None):
     # {'days: 365}
